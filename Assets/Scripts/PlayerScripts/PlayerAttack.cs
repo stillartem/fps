@@ -22,6 +22,7 @@ public class PlayerAttack : MonoBehaviour
     zoomCameraAnimator = GameObject.FindGameObjectWithTag(Tags.ZOOM_CAMERA)
       .GetComponent<Animator>();
     crosshair = GameObject.FindGameObjectWithTag(Tags.CROSSHAIR);
+    mainCamera = Camera.main;
 
   }
 
@@ -45,7 +46,8 @@ public class PlayerAttack : MonoBehaviour
         SingleShoot(weaponHandler);
         break;
       case WeaponFireType.MULTIPLE:
-        MultipleShoot(weaponHandler);
+        BulletShoot
+        (weaponHandler);
         break;
     }
   }
@@ -76,24 +78,25 @@ public class PlayerAttack : MonoBehaviour
     }
   }
 
-  private void MultipleShoot(WeaponHandler weaponHandler)
+  private void BulletShoot(WeaponHandler weaponHandler)
   {
     if (Input.GetMouseButtonDown(0) && Time.time > nextTimeToFire)
     {
-      nextTimeToFire = Time.time + 1f / fireRate;
+      weaponHandler.playSoundShoot();
+      weaponHandler.muzzleFlashTurnOn();
       weaponHandler.ShootAnimation();
-    }
-  }
-
-
-  private void BulletShoot(WeaponHandler weaponHandler)
-  {
-    weaponHandler.playSoundShoot();
-    weaponHandler.muzzleFlashTurnOn();
-    weaponHandler.ShootAnimation();
-    if (weaponHandler.isBulletPrefabExist())
-    {
-      Instantiate(weaponHandler.bulletPrefab, weaponHandler.startPosition.transform.position, weaponHandler.startPosition.transform.rotation);
+      if (weaponHandler.isBulletPrefabExist())
+      {
+        Instantiate(weaponHandler.bulletPrefab, weaponHandler.startPosition.transform.position, weaponHandler.startPosition.transform.rotation);
+      }
+      else
+      {
+        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out RaycastHit hit))
+        {
+          Debug.DrawRay(mainCamera.transform.position, transform.TransformDirection(mainCamera.transform.forward * 1000), Color.yellow);
+          print("We Hit" + hit.transform.gameObject.name);
+        }
+      }
     }
   }
 

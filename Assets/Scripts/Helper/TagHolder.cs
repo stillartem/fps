@@ -15,6 +15,8 @@ public class AnimationAction
   public const string AIM_PARAMETER = "Aim";
 
   public const string WALK_PARAMETER = "Walk";
+  public const string HIT_NORMAL_PARAMETER = "HitNormal";
+  public const string HIT_HARD_PARAMETER = "HitHard";
   public const string RUN_PARAMETER = "Run";
   public const string ATTACK_TRIGGER = "Attack";
   public const string DEAD_TRIGGER = "Dead";
